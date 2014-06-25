@@ -119,7 +119,7 @@ class TMainForm:public TForm {
         TLabel *Label18;
         TLabel *Label19;
         TEdit *Edit_AgingModeSelectAddress;
-        TEdit *Edit_AgingModeSelectBit;
+        TEdit *Edit_AgingModeSelectStartBit;
         TGroupBox *GroupBox_AgingPatternSel;
         TLabel *Label20;
         TLabel *Label23;
@@ -364,6 +364,10 @@ class TMainForm:public TForm {
         TGroupBox *GroupBox_AG_FRM_RATE;
         TComboBox *ComboBox_AGFrameRate;
         TRadioGroup *RadioGroup_DataByte;
+        TLabel *Label111;
+        TEdit *Edit_AgingModeSelectValue;
+        TLabel *Label112;
+        TEdit *Edit_AgingModeSelectEndBit;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

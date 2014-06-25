@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 129
-  Top = 189
-  Width = 1015
-  Height = 610
+  Left = 44
+  Top = 153
+  Width = 1020
+  Height = 620
   Caption = 'CCT Adjustment '
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -836,7 +836,7 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = -1
     Top = 5
-    Width = 826
+    Width = 834
     Height = 484
     ActivePage = TabSheet1
     TabIndex = 0
@@ -1136,7 +1136,7 @@ object MainForm: TMainForm
           Left = 1
           Top = 7
           Width = 200
-          Height = 98
+          Height = 74
           Caption = 'Card Select'
           Color = clBtnFace
           ParentColor = False
@@ -1153,17 +1153,18 @@ object MainForm: TMainForm
             OnClick = RadioButton_AUO_USBClick
           end
           object RadioButton_LPTLarge: TRadioButton
-            Left = 7
-            Top = 33
+            Left = 95
+            Top = 25
             Width = 72
             Height = 20
             Caption = 'LPT Large'
             TabOrder = 1
+            Visible = False
             OnClick = RadioButton_LPTLargeClick
           end
           object RadioButton_LPTSmall: TRadioButton
             Left = 7
-            Top = 53
+            Top = 34
             Width = 73
             Height = 19
             Caption = 'LPT Small'
@@ -1172,7 +1173,7 @@ object MainForm: TMainForm
           end
           object RadioButton_DoDoBird_USB: TRadioButton
             Left = 7
-            Top = 72
+            Top = 54
             Width = 113
             Height = 17
             Caption = 'DoDoBird USB'
@@ -1182,7 +1183,7 @@ object MainForm: TMainForm
         end
         object GroupBox_DeviceAddress: TGroupBox
           Left = 2
-          Top = 137
+          Top = 129
           Width = 199
           Height = 98
           Caption = 'Device Address'
@@ -1273,7 +1274,7 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 208
           Top = 7
-          Width = 601
+          Width = 608
           Height = 442
           Caption = 'TCON Type'
           TabOrder = 3
@@ -1289,8 +1290,8 @@ object MainForm: TMainForm
           object PageControl_RegisterSetting: TPageControl
             Left = 8
             Top = 40
-            Width = 585
-            Height = 393
+            Width = 593
+            Height = 398
             ActivePage = TabSheet3
             TabIndex = 0
             TabOrder = 1
@@ -1300,14 +1301,14 @@ object MainForm: TMainForm
                 Left = 304
                 Top = 0
                 Width = 281
-                Height = 257
+                Height = 256
                 Caption = 'Aging mode'
                 TabOrder = 0
                 object GroupBox_AgingModeSel: TGroupBox
                   Left = 8
                   Top = 85
                   Width = 129
-                  Height = 66
+                  Height = 92
                   Caption = 'MODE_SEL'
                   TabOrder = 0
                   object Label18: TLabel
@@ -1319,10 +1320,24 @@ object MainForm: TMainForm
                   end
                   object Label19: TLabel
                     Left = 8
-                    Top = 40
+                    Top = 72
                     Width = 12
                     Height = 13
                     Caption = 'Bit'
+                  end
+                  object Label111: TLabel
+                    Left = 8
+                    Top = 40
+                    Width = 54
+                    Height = 13
+                    Caption = 'Value (dec)'
+                  end
+                  object Label112: TLabel
+                    Left = 64
+                    Top = 72
+                    Width = 7
+                    Height = 13
+                    Caption = '~'
                   end
                   object Edit_AgingModeSelectAddress: TEdit
                     Left = 80
@@ -1332,18 +1347,34 @@ object MainForm: TMainForm
                     TabOrder = 0
                     Text = '40'
                   end
-                  object Edit_AgingModeSelectBit: TEdit
-                    Left = 80
-                    Top = 39
+                  object Edit_AgingModeSelectStartBit: TEdit
+                    Left = 24
+                    Top = 66
                     Width = 38
                     Height = 21
                     TabOrder = 1
                     Text = '5'
                   end
+                  object Edit_AgingModeSelectValue: TEdit
+                    Left = 80
+                    Top = 40
+                    Width = 38
+                    Height = 21
+                    TabOrder = 2
+                    Text = '17'
+                  end
+                  object Edit_AgingModeSelectEndBit: TEdit
+                    Left = 80
+                    Top = 66
+                    Width = 38
+                    Height = 21
+                    TabOrder = 3
+                    Text = '4'
+                  end
                 end
                 object GroupBox_AgingPatternSel: TGroupBox
-                  Left = 9
-                  Top = 152
+                  Left = 145
+                  Top = 16
                   Width = 128
                   Height = 97
                   Caption = 'PTN_SEL'
@@ -1411,7 +1442,7 @@ object MainForm: TMainForm
                 end
                 object GroupBox_AgingRasterGray: TGroupBox
                   Left = 144
-                  Top = 16
+                  Top = 112
                   Width = 129
                   Height = 65
                   Caption = 'RASTER_GRAY'
@@ -1447,7 +1478,8 @@ object MainForm: TMainForm
                       '12409Aging'
                       '11311Type'
                       '12411Aging'
-                      '12411Type')
+                      '12411Type'
+                      'HawkType')
                   end
                   object Edit_AgingRasterGrayAddress: TEdit
                     Left = 80
@@ -1498,7 +1530,7 @@ object MainForm: TMainForm
                 end
                 object GroupBox_MANU_SEL: TGroupBox
                   Left = 144
-                  Top = 85
+                  Top = 181
                   Width = 129
                   Height = 68
                   Caption = 'MANU_SEL'
@@ -1587,7 +1619,7 @@ object MainForm: TMainForm
                 Left = 8
                 Top = 255
                 Width = 569
-                Height = 110
+                Height = 114
                 Caption = 'Second Gamma'
                 TabOrder = 2
                 object GroupBox_GroupBox_GAM2_EN: TGroupBox
@@ -1848,7 +1880,8 @@ object MainForm: TMainForm
                       '12409Aging'
                       '11311Type'
                       '12411Aging'
-                      '12411Type')
+                      '12411Type'
+                      'HawkType')
                   end
                 end
                 object GroupBox_HideEN: TGroupBox
@@ -2495,6 +2528,7 @@ object MainForm: TMainForm
                   Width = 38
                   Height = 21
                   TabOrder = 0
+                  Text = '5A'
                 end
                 object Edit_AGFrameRateStartBit: TEdit
                   Left = 48
@@ -2502,6 +2536,7 @@ object MainForm: TMainForm
                   Width = 33
                   Height = 21
                   TabOrder = 1
+                  Text = '4'
                 end
                 object Edit_AGFrameRateEndBit: TEdit
                   Left = 88
@@ -2509,6 +2544,7 @@ object MainForm: TMainForm
                   Width = 30
                   Height = 21
                   TabOrder = 2
+                  Text = '5'
                 end
               end
               object GroupBox22: TGroupBox
@@ -2559,6 +2595,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '1C6'
                   end
                   object Edit_mpllModeEndBit: TEdit
                     Left = 88
@@ -2566,6 +2603,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '4'
                   end
                   object Edit_mpllModeStartBit: TEdit
                     Left = 48
@@ -2573,6 +2611,7 @@ object MainForm: TMainForm
                     Width = 33
                     Height = 21
                     TabOrder = 2
+                    Text = '3'
                   end
                   object Edit_mpllModeValue: TEdit
                     Left = 80
@@ -2580,6 +2619,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '0'
                   end
                 end
                 object GroupBox20: TGroupBox
@@ -2644,6 +2684,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '1C7'
                   end
                   object Edit_mpllFMSBEndBit: TEdit
                     Left = 88
@@ -2651,6 +2692,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '6'
                   end
                   object Edit_mpllFMSBStartBit: TEdit
                     Left = 48
@@ -2658,6 +2700,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 2
+                    Text = '0'
                   end
                   object Edit_mpllFLSBAddress: TEdit
                     Left = 83
@@ -2665,6 +2708,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '1C8'
                   end
                   object Edit_mpllFLSBEndBit: TEdit
                     Left = 91
@@ -2672,6 +2716,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 4
+                    Text = '7'
                   end
                   object Edit_mpllFLSBStartBit: TEdit
                     Left = 48
@@ -2679,6 +2724,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 5
+                    Text = '0'
                   end
                   object Edit_mpllFValue: TEdit
                     Left = 80
@@ -2686,6 +2732,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 6
+                    Text = '0'
                   end
                 end
                 object GroupBox21: TGroupBox
@@ -2722,6 +2769,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '1C6'
                   end
                   object Edit_mpllMEndBit: TEdit
                     Left = 88
@@ -2729,6 +2777,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '6'
                   end
                   object Edit_mpllMStartBit: TEdit
                     Left = 48
@@ -2736,6 +2785,7 @@ object MainForm: TMainForm
                     Width = 33
                     Height = 21
                     TabOrder = 2
+                    Text = '5'
                   end
                   object Edit_mpllMValue: TEdit
                     Left = 80
@@ -2743,6 +2793,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '3'
                   end
                 end
                 object GroupBox19: TGroupBox
@@ -2807,6 +2858,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '1C2'
                   end
                   object Edit_mpllNMSBEndBit: TEdit
                     Left = 88
@@ -2814,6 +2866,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '7'
                   end
                   object Edit_mpllNMSBStartBit: TEdit
                     Left = 48
@@ -2821,6 +2874,7 @@ object MainForm: TMainForm
                     Width = 33
                     Height = 21
                     TabOrder = 2
+                    Text = '5'
                   end
                   object Edit_mpllNValue: TEdit
                     Left = 80
@@ -2828,6 +2882,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '12'
                   end
                   object Edit_mpllNLSBAddress: TEdit
                     Left = 83
@@ -2835,6 +2890,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 4
+                    Text = '1C4'
                   end
                   object Edit_mpllNLSBEndBit: TEdit
                     Left = 91
@@ -2842,6 +2898,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 5
+                    Text = '7'
                   end
                   object Edit_mpllNLSBStartBit: TEdit
                     Left = 48
@@ -2849,6 +2906,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 6
+                    Text = '5'
                   end
                 end
               end
@@ -2921,6 +2979,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '47'
                   end
                   object Edit_AGHblkMSBStartBit: TEdit
                     Left = 48
@@ -2928,6 +2987,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '0'
                   end
                   object Edit_AGHblkMSBEndBit: TEdit
                     Left = 88
@@ -2935,6 +2995,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 2
+                    Text = '7'
                   end
                   object Edit_AGHblkLSBAddress: TEdit
                     Left = 83
@@ -2942,6 +3003,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '48'
                   end
                   object Edit_AGHblkLSBStartBit: TEdit
                     Left = 48
@@ -2949,6 +3011,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 4
+                    Text = '5'
                   end
                   object Edit_AGHblkLSBEndBit: TEdit
                     Left = 91
@@ -2956,6 +3019,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 5
+                    Text = '7'
                   end
                   object Edit_AGHblkValue: TEdit
                     Left = 80
@@ -2963,6 +3027,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 6
+                    Text = '176'
                   end
                 end
                 object GroupBox16: TGroupBox
@@ -3027,6 +3092,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '48'
                   end
                   object Edit_AGVblk1MSBStartBit: TEdit
                     Left = 48
@@ -3034,6 +3100,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '0'
                   end
                   object Edit_AGVblk1MSBEndBit: TEdit
                     Left = 88
@@ -3041,6 +3108,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 2
+                    Text = '4'
                   end
                   object Edit_AGVblk1LSBAddress: TEdit
                     Left = 83
@@ -3048,6 +3116,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '49'
                   end
                   object Edit_AGVblk1LSBStartBit: TEdit
                     Left = 48
@@ -3055,6 +3124,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 4
+                    Text = '2'
                   end
                   object Edit_AGVblk1LSBEndBit: TEdit
                     Left = 91
@@ -3062,6 +3132,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 5
+                    Text = '7'
                   end
                   object Edit_AGVblk1Value: TEdit
                     Left = 80
@@ -3069,6 +3140,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 6
+                    Text = '20'
                   end
                 end
                 object GroupBox17: TGroupBox
@@ -3133,6 +3205,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 0
+                    Text = '51'
                   end
                   object Edit_AGVblk2MSBStartBit: TEdit
                     Left = 48
@@ -3140,6 +3213,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 1
+                    Text = '4'
                   end
                   object Edit_AGVblk2MSBEndBit: TEdit
                     Left = 88
@@ -3147,6 +3221,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 2
+                    Text = '7'
                   end
                   object Edit_AGVblk2LSBAddress: TEdit
                     Left = 83
@@ -3154,6 +3229,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 3
+                    Text = '52'
                   end
                   object Edit_AGVblk2LSBStartBit: TEdit
                     Left = 48
@@ -3161,6 +3237,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 4
+                    Text = '0'
                   end
                   object Edit_AGVblk2LSBEndBit: TEdit
                     Left = 91
@@ -3168,6 +3245,7 @@ object MainForm: TMainForm
                     Width = 30
                     Height = 21
                     TabOrder = 5
+                    Text = '6'
                   end
                   object Edit_AGVblk2Value: TEdit
                     Left = 80
@@ -3175,6 +3253,7 @@ object MainForm: TMainForm
                     Width = 38
                     Height = 21
                     TabOrder = 6
+                    Text = '20'
                   end
                 end
               end
@@ -3196,13 +3275,16 @@ object MainForm: TMainForm
             Height = 41
             Caption = 'AG_FRM_RATE [1:0]'
             TabOrder = 2
+            Visible = False
             object ComboBox_AGFrameRate: TComboBox
               Left = 8
               Top = 16
               Width = 113
               Height = 21
               ItemHeight = 13
+              ItemIndex = 1
               TabOrder = 0
+              Text = '120Hz'
               OnChange = ComboBox_AGFrameRateChange
               Items.Strings = (
                 '60Hz'
@@ -3260,7 +3342,7 @@ object MainForm: TMainForm
         end
         object RadioGroup_DataByte: TRadioGroup
           Left = 0
-          Top = 104
+          Top = 88
           Width = 201
           Height = 33
           Caption = 'Data Byte'
@@ -3270,7 +3352,6 @@ object MainForm: TMainForm
             '1 Byte'
             '2 Byre')
           TabOrder = 6
-          Visible = False
         end
       end
     end
@@ -3287,8 +3368,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 537
-    Width = 1007
+    Top = 547
+    Width = 1012
     Height = 19
     Color = clWhite
     Panels = <
@@ -3306,7 +3387,7 @@ object MainForm: TMainForm
     SimplePanel = False
   end
   object GroupBox_BitDepth: TGroupBox
-    Left = 834
+    Left = 842
     Top = 23
     Width = 163
     Height = 202

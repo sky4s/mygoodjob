@@ -23,7 +23,9 @@ namespace i2c {
 	DGLutAddress(-1), dgLUTType(-1), DGAddress(-1), DGBit(0), gammaTest(true), FRCAddress(-1), FRCBit(0),
 	hideENAddress(-1), hideENBit(-1), hideEn(false), agingAGBSDebugAddress(-1),
         agingAGBSDebugBit(-1), agingModeSelectAddress(-1),
-        agingModeSelectBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
+        agingModeSelectValue(-1),
+        agingModeSelectStartBit(-1),agingModeSelectEndBit(-1),
+        agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
         agingPatternSelectStartBit(-1), agingPatternSelectEndBit(-1), agingRasterGrayAddress(-1),
         agingModeType(agingModeType), agingMode(false), agingManuSelectAddress(-1), agingManuSelectBit(-1),
         secondGamma(false), DG2Address(-1), DG2Bit(0), DG2LutAddress(-1), gammaTest2Address(-1), gammaTest2Bit(0),
@@ -61,6 +63,7 @@ namespace i2c {
         agingVblk1MSBEndBit(-1), agingVblk1LSBAddress(-1),
         agingVblk1LSBStartBit(-1), agingVblk1LSBEndBit(-1),
         agingVblk1Value(-1),
+        agingVblk2MSBAddress(-1), agingVblk2MSBStartBit(-1),
         agingVblk2MSBEndBit(-1), agingVblk2LSBAddress(-1),
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
@@ -78,7 +81,8 @@ namespace i2c {
         DGAddress(DGAddress), DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress),
         FRCBit(FRCBit), hideENAddress(-1), hideENBit(-1), hideEn(false), agingAGBSDebugAddress(-1),
         agingAGBSDebugBit(-1), agingModeSelectAddress(-1),
-        agingModeSelectBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
+        agingModeSelectValue(-1),
+        agingModeSelectStartBit(-1),agingModeSelectEndBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
         agingPatternSelectStartBit(-1), agingPatternSelectEndBit(-1), agingRasterGrayAddress(-1),
         agingModeType(agingModeType), agingMode(false), agingManuSelectAddress(-1), agingManuSelectBit(-1),
         secondGamma(false), DG2Address(-1), DG2Bit(0), DG2LutAddress(-1), gammaTest2Address(-1), gammaTest2Bit(0),
@@ -116,6 +120,7 @@ namespace i2c {
         agingVblk1MSBEndBit(-1), agingVblk1LSBAddress(-1),
         agingVblk1LSBStartBit(-1), agingVblk1LSBEndBit(-1),
         agingVblk1Value(-1),
+        agingVblk2MSBAddress(-1), agingVblk2MSBStartBit(-1),
         agingVblk2MSBEndBit(-1), agingVblk2LSBAddress(-1),
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
@@ -134,7 +139,8 @@ namespace i2c {
         DGAddress(DGAddress), DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit),
 	hideENAddress(hideENAddress), hideENBit(hideENBit), hideEn(true), agingAGBSDebugAddress(-1),
         agingAGBSDebugBit(-1), agingModeSelectAddress(-1),
-        agingModeSelectBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
+        agingModeSelectValue(-1),
+        agingModeSelectStartBit(-1),agingModeSelectEndBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
         agingPatternSelectStartBit(-1), agingPatternSelectEndBit(-1), agingRasterGrayAddress(-1),
         agingModeType(agingModeType), agingMode(false), agingManuSelectAddress(-1), agingManuSelectBit(-1),
         secondGamma(false), DG2Address(-1), DG2Bit(0), DG2LutAddress(-1), gammaTest2Address(-1), gammaTest2Bit(0),
@@ -172,6 +178,7 @@ namespace i2c {
         agingVblk1MSBEndBit(-1), agingVblk1LSBAddress(-1),
         agingVblk1LSBStartBit(-1), agingVblk1LSBEndBit(-1),
         agingVblk1Value(-1),
+        agingVblk2MSBAddress(-1), agingVblk2MSBStartBit(-1),
         agingVblk2MSBEndBit(-1), agingVblk2LSBAddress(-1),
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
@@ -188,7 +195,9 @@ namespace i2c {
                                  const int agingAGBSDebugAddress,
                                  const unsigned char agingAGBSDebugBit,
                                  const int agingModeSelectAddress,
-                                 const unsigned char agingModeSelectBit,
+                                 const int agingModeSelectValue,
+                                 const unsigned char agingModeSelectStartBit,
+                                 const unsigned char agingModeSelectEndBit,
                                  const int agingPatternSelectAddress,
                                  const unsigned char agingPatternSelectValue,
                                  const unsigned char agingPatternSelectStartBit,
@@ -229,7 +238,9 @@ namespace i2c {
 	DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
 	hideENBit(-1), hideEn(false), agingAGBSDebugAddress(agingAGBSDebugAddress),
         agingAGBSDebugBit(agingAGBSDebugBit), agingModeSelectAddress(agingModeSelectAddress),
-        agingModeSelectBit(agingModeSelectBit), agingPatternSelectAddress(agingPatternSelectAddress),
+        agingModeSelectValue(agingModeSelectValue),
+        agingModeSelectStartBit(agingModeSelectStartBit),agingModeSelectEndBit(agingModeSelectEndBit),
+        agingPatternSelectAddress(agingPatternSelectAddress),
         agingPatternSelectValue(agingPatternSelectValue),
         agingPatternSelectStartBit(agingPatternSelectStartBit),
         agingPatternSelectEndBit(agingPatternSelectEndBit), agingRasterGrayAddress(agingRasterGrayAddress),
@@ -257,6 +268,7 @@ namespace i2c {
         agingVblk1MSBEndBit(agingVblk1MSBEndBit), agingVblk1LSBAddress(agingVblk1LSBAddress),
         agingVblk1LSBStartBit(agingVblk1LSBStartBit), agingVblk1LSBEndBit(agingVblk1LSBEndBit),
         agingVblk1Value(agingVblk1Value),
+        agingVblk2MSBAddress(agingVblk2MSBAddress), agingVblk2MSBStartBit(agingVblk2MSBStartBit),
         agingVblk2MSBEndBit(agingVblk2MSBEndBit), agingVblk2LSBAddress(agingVblk2LSBAddress),
         agingVblk2LSBStartBit(agingVblk2LSBStartBit), agingVblk2LSBEndBit(agingVblk2LSBEndBit),
         agingVblk2Value(agingVblk2Value),
@@ -285,7 +297,9 @@ namespace i2c {
                                  const int agingAGBSDebugAddress,
                                  const unsigned char agingAGBSDebugBit,
                                  const int agingModeSelectAddress,
-                                 const unsigned char agingModeSelectBit,
+                                 const int agingModeSelectValue,
+                                 const unsigned char agingModeSelectStartBit,
+                                 const unsigned char agingModeSelectEndBit,
                                  const int agingPatternSelectAddress,
                                  const unsigned char agingPatternSelectValue,
                                  const unsigned char agingPatternSelectStartBit,
@@ -331,7 +345,8 @@ namespace i2c {
 	DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
 	hideENBit(-1), hideEn(false), agingAGBSDebugAddress(agingAGBSDebugAddress),
         agingAGBSDebugBit(agingAGBSDebugBit), agingModeSelectAddress(agingModeSelectAddress),
-        agingModeSelectBit(agingModeSelectBit), agingPatternSelectAddress(agingPatternSelectAddress),
+        agingModeSelectValue(agingModeSelectValue),
+        agingModeSelectStartBit(agingModeSelectStartBit),agingModeSelectEndBit(agingModeSelectEndBit),
         agingPatternSelectValue(agingPatternSelectValue),
         agingPatternSelectStartBit(agingPatternSelectStartBit),
         agingPatternSelectEndBit(agingPatternSelectEndBit), agingRasterGrayAddress(agingRasterGrayAddress),
@@ -373,6 +388,7 @@ namespace i2c {
         agingVblk1MSBEndBit(agingVblk1MSBEndBit), agingVblk1LSBAddress(agingVblk1LSBAddress),
         agingVblk1LSBStartBit(agingVblk1LSBStartBit), agingVblk1LSBEndBit(agingVblk1LSBEndBit),
         agingVblk1Value(agingVblk1Value),
+        agingVblk2MSBAddress(agingVblk2MSBAddress), agingVblk2MSBStartBit(agingVblk2MSBStartBit),
         agingVblk2MSBEndBit(agingVblk2MSBEndBit), agingVblk2LSBAddress(agingVblk2LSBAddress),
         agingVblk2LSBStartBit(agingVblk2LSBStartBit), agingVblk2LSBEndBit(agingVblk2LSBEndBit),
         agingVblk2Value(agingVblk2Value)
@@ -410,7 +426,8 @@ namespace i2c {
 	DGLutAddress(-1), dgLUTType(-1), DGAddress(-1), DGBit(0), gammaTest(true),
 	hideENAddress(-1), hideENBit(-1), hideEn(false), agingAGBSDebugAddress(-1),
         agingAGBSDebugBit(-1), agingModeSelectAddress(-1),
-        agingModeSelectBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
+        agingModeSelectValue(-1),
+        agingModeSelectStartBit(-1),agingModeSelectEndBit(-1), agingPatternSelectAddress(-1), agingPatternSelectValue(-1),
         agingPatternSelectStartBit(-1), agingPatternSelectEndBit(-1), agingRasterGrayAddress(-1),
         agingModeType(agingModeType), agingMode(false), agingManuSelectAddress(-1), agingManuSelectBit(-1),
         secondGamma(false), DG2Address(-1), DG2Bit(0), DG2LutAddress(-1), gammaTest2Address(-1), gammaTest2Bit(0),
@@ -438,6 +455,7 @@ namespace i2c {
         agingVblk1MSBEndBit(-1), agingVblk1LSBAddress(-1),
         agingVblk1LSBStartBit(-1), agingVblk1LSBEndBit(-1),
         agingVblk1Value(-1),
+        agingVblk2MSBAddress(-1), agingVblk2MSBStartBit(-1),
         agingVblk2MSBEndBit(-1), agingVblk2LSBAddress(-1),
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1)
@@ -453,7 +471,8 @@ namespace i2c {
 	DGLutAddress(DGLutAddress), dgLUTType(dgLUTType), DGAddress(DGAddress), DGBit(DGBit),
         gammaTest(false), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
         hideENBit(-1), hideEn(false), agingAGBSDebugAddress(-1), agingAGBSDebugBit(-1),
-        agingModeSelectAddress(-1), agingModeSelectBit(-1), agingPatternSelectAddress(-1),
+        agingModeSelectAddress(-1), agingModeSelectValue(-1),
+        agingModeSelectStartBit(-1),agingModeSelectEndBit(-1), agingPatternSelectAddress(-1),
         agingPatternSelectValue(-1), agingPatternSelectStartBit(-1), agingPatternSelectEndBit(-1),
         agingRasterGrayAddress(-1), agingModeType(agingModeType), agingMode(false), agingManuSelectAddress(-1), agingManuSelectBit(-1),
         secondGamma(false), DG2Address(-1), DG2Bit(0), DG2LutAddress(-1), gammaTest2Address(-1), gammaTest2Bit(0),
@@ -491,6 +510,7 @@ namespace i2c {
         agingVblk1MSBEndBit(-1), agingVblk1LSBAddress(-1),
         agingVblk1LSBStartBit(-1), agingVblk1LSBEndBit(-1),
         agingVblk1Value(-1),
+        agingVblk2MSBAddress(-1), agingVblk2MSBStartBit(-1),
         agingVblk2MSBEndBit(-1), agingVblk2LSBAddress(-1),
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
@@ -548,6 +568,8 @@ namespace i2c {
     const DirectGammaType DirectGammaType::TCON12411AgingInstance(0, 0, 0, 0, 0, 0, 0, 10); //Αぃ把计⊿ノDEFULE=0
     //12411 |RH |RL|GH |GL|BH |BL|
     const DirectGammaType DirectGammaType::TCON12411Instance(12, 0, 28, 16, 36, 32, 6, 12);
+    //Hawk ⊿ノ硂ㄇ把计
+    const DirectGammaType DirectGammaType::HawkTypeInstance(0, 0, 0, 0, 0, 0, 0, 0);
 
     const DirectGammaType DirectGammaType::NotAssignInstance(0, 0, 0, 0, 0, 0, 0, 12);
 };

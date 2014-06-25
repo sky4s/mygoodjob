@@ -326,8 +326,8 @@ namespace i2c {
             //[9:4](bit:0~5)，[3:0](bit:0~3)
 
             //因為AUO-12411像是TCON的Special case 所以設定先寫死
-            unsigned char bytedata = readByte(80);  //(Dec)
-            int high = (bytedata & 192) | (r >> 4);      //取r當灰階值就好
+            unsigned char bytedata = readByte(80);     //(Dec)
+            int high = (bytedata & 192) | (r >> 4);    //取r當灰階值就好
 
             bytedata = readByte(81);
             int low = (bytedata & 240) | (r & 15);
@@ -354,6 +354,26 @@ namespace i2c {
                 bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
                 return data->equals(dataFrom0) && data->equals(dataFrom1);
             }
+        } else if(agingModeType == DirectGammaType::HawkTypeInstance) { //Hawk 不用排資料(分三個Address送)
+
+            bptr < ByteBuffer > data(new ByteBuffer(2));
+            //先清空buffer
+            for (int x = 0; x < 2; x++) {
+                (*data)[x] = 0;
+            }
+            r = r*4;  //用r當灰階，Hawk aging為12bit(data*4)
+            (*data)[0] =  r >> 8;   //MSB
+            (*data)[1] =  r & 255;  //LSB
+
+            int address = parameter->agingRasterGrayAddress;
+
+            //R Channel
+            write(address, data);
+            //G Channel
+            write(address+1, data);
+            //B Channel
+            write(address+2, data);
+
         } else {
 	    bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, agingModeType);
 
@@ -415,7 +435,10 @@ namespace i2c {
 	if (enable && parameter->isHideEnable()) {
 	    setSingleBitData(parameter->hideENAddress, parameter->hideENBit, enable);
 	}
-	setSingleBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
+
+        if(parameter->gammaTestBit != -1) {   //避免有些Tcon沒gammaTest
+	        setSingleBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
+        }
 
         if(parameter->secondGamma) {    //for two DG (DirectGamma也兩個)
             setSingleBitData(parameter->gammaTest2Address, parameter->gammaTest2Bit, enable);
@@ -428,16 +451,23 @@ namespace i2c {
 
     void TCONControl::setTconAgingMode(bool enable) {
         //1. AG_PTN_SEL
-        //2. AG_MODE_SEL
+        //2. AG_MODE_SEL    (Hold!?)
         //3. AG_MANU_SEL    (目前只有AUO-12411/2有,12409無)  201312 by BS+
         //4. AGBS_DEBUG
         setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
                    parameter->agingPatternSelectEndBit, parameter->agingPatternSelectValue);
-        setSingleBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectBit, enable);
+        setBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectStartBit,
+                   parameter->agingModeSelectEndBit, parameter->agingModeSelectValue);
         if(parameter->agingManuSelectAddress != -1) {
             setSingleBitData(parameter->agingManuSelectAddress, parameter->agingManuSelectBit, 0); //0: 選Type 1(AUO)
         }
+
+        if(enable==false) {       //for Hawk : 這個要設0，量完才會跳出aging
+            setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
+                       parameter->agingPatternSelectEndBit, enable);
+        }
         setSingleBitData(parameter->agingAGBSDebugAddress, parameter->agingAGBSDebugBit, enable);
+
     };
 
     //Current for 12411/2        201406011 byBS+
@@ -447,14 +477,12 @@ namespace i2c {
             //1. AG_FRM_RATE[1:0]
             //2. AG_MPLL_MODE[1:0]
             //3. AG_MPLL_N[5:0]   4. AG_MPLL_F[15:0]   5. AG_MPLL_M[1:0]
-            //7. AG_HBLK[10:0]   8. AG_VBLK1[10:0]   9. AG_VBLK2[10:0]
+            //6. AG_HBLK[10:0]   7. AG_VBLK1[10:0]   8. AG_VBLK2[10:0]
 
             setBitData(parameter->agingFrameRateAddress, parameter->agingFrameRateStartBit,
                        parameter->agingFrameRateEndBit, parameter->agingFrameRate);
             setBitData(parameter->agingMpllModeAddress, parameter->agingMpllModeStartBit,
                        parameter->agingMpllModeEndBit, parameter->agingMpllModeValue);
-            /*setBitData(parameter->agingMpllNAddress, parameter->agingMpllNStartBit,
-                       parameter->agingMpllNEndBit, parameter->agingMpllNValue); */
             setTwoByteData(parameter->agingMpllNMSBAddress, parameter->agingMpllNMSBStartBit, parameter->agingMpllNMSBEndBit,
                            parameter->agingMpllNLSBAddress, parameter->agingMpllNLSBStartBit, parameter->agingMpllNLSBEndBit,
                            parameter->agingMpllNValue);
@@ -728,10 +756,12 @@ namespace i2c {
 	return result;
     }
     void TCONControl::setDG(bool enable) {
-	setSingleBitData(parameter->DGAddress, parameter->DGBit, enable);
+        if(parameter->DGBit != -1) {   //避免有些Tcon沒DG
+            setSingleBitData(parameter->DGAddress, parameter->DGBit, enable);
 
-        if(parameter->secondGamma)
-            setSingleBitData(parameter->DG2Address, parameter->DG2Bit, enable);
+            if(parameter->secondGamma)
+                setSingleBitData(parameter->DG2Address, parameter->DG2Bit, enable);
+        }
     };
     bool TCONControl::isDG() {
 	return getBitData(parameter->DGAddress, parameter->DGBit);
@@ -746,28 +776,85 @@ namespace i2c {
 	return getBitData(parameter->FRCAddress, parameter->FRCBit);
     };
     void TCONControl::setSingleBitData(int dataAddress, unsigned char bit, bool data) {
-	unsigned char bytedata = readByte(dataAddress);
-	//製作遮罩
-	unsigned char mask = ~(1 << bit);
-	//挖掉要填的那個位元
-	bytedata = bytedata & mask;
-	//產生要填的data
-	bytedata = bytedata | data << bit;
-	writeByte(dataAddress, bytedata);
+        if(control->dataByteNum == 1) {
+            unsigned char bytedata = readByte(dataAddress);
+            //製作遮罩
+            unsigned char mask = ~(1 << bit);
+            //挖掉要填的那個位元
+            bytedata = bytedata & mask;
+            //產生要填的data
+            bytedata = bytedata | data << bit;
+            writeByte(dataAddress, bytedata);
+        }  else{  //2 Data Byte potocol              20140623  byBS+
+            bptr < ByteBuffer > twobytedata = read(dataAddress, 2, 0);   //2. size, 3. tconIndex
+            unsigned char byteMSB = (*twobytedata)[0];
+            unsigned char byteLSB = (*twobytedata)[1];
+
+            if(bit < 8) { //bit at LSB
+                unsigned char mask = ~(1 << bit);
+                byteLSB = byteLSB & mask;
+                byteLSB = byteLSB | (data << bit);
+            } else {     //bit at MSB
+                unsigned char mask = ~(1 << (bit-8));
+                byteMSB = byteMSB & mask;
+                byteMSB = byteMSB | (data << (bit-8));
+            }
+
+            (*twobytedata)[0] = byteMSB;
+            (*twobytedata)[1] = byteLSB;
+
+
+            write(dataAddress, twobytedata);
+        }
     };
                                  //1.EEPROM位址  2.開始bit  3.結束bit  4. 寫入值    byBS+
     void TCONControl::setBitData(int dataAddress, unsigned char Startbit,
-                                 unsigned char Endbit, unsigned char data) {
-	unsigned char bytedata = readByte(dataAddress);
-        unsigned char bitlength = (Endbit-Startbit+1);
+                                 unsigned char Endbit, int data) {
+        if(control->dataByteNum == 1) {
+            unsigned char bytedata = readByte(dataAddress);
+            unsigned char bitlength = (Endbit-Startbit+1);
 
-	//製作遮罩
-	unsigned char mask = 255 &  ~ (((1<<bitlength)-1) << Startbit);
-	//挖掉要填的位元
-	bytedata = bytedata & mask;
-	//產生要填的data
-	bytedata = bytedata | data << Startbit;
-	writeByte(dataAddress, bytedata);
+            //製作遮罩
+            unsigned char mask = 255 &  ~ (((1<<bitlength)-1) << Startbit);
+            //挖掉要填的位元
+            bytedata = bytedata & mask;
+            //產生要填的data
+            bytedata = bytedata | (data << Startbit);
+            writeByte(dataAddress, bytedata);
+        } else{  //2 Data Byte potocol              20140623  byBS+
+            bptr < ByteBuffer > twobytedata = read(dataAddress, 2, 0);   //2. size, 3. tconIndex
+            unsigned char byteMSB = (*twobytedata)[0];
+            unsigned char byteLSB = (*twobytedata)[1];
+
+            unsigned char bitlength = (Endbit-Startbit+1);
+
+            unsigned char lengthMSB;
+            if(bitlength-(8-Startbit)>0 && bitlength-(8-Startbit)<= bitlength) {
+                lengthMSB = bitlength-(8-Startbit);
+            } else if((bitlength-(8-Startbit))<0) {
+                lengthMSB = 0;
+            } else if((bitlength-(8-Startbit))> bitlength) {
+                lengthMSB = bitlength;
+            }
+            //unsigned char lengthLSB = (Startbit-bitlength)>0 ? bitlength-(Startbit-bitlength) :
+            //                                     bitlength<9 ? bitlength : 8;
+            unsigned char lengthLSB = bitlength-lengthMSB;
+
+            unsigned char dataMSB = data >> (bitlength-lengthMSB);
+            unsigned char dataLSB = data >> (bitlength-lengthLSB);
+
+            int StartbitMSB = (Startbit-8)>0 ? (Startbit-8): 0;
+            unsigned char maskMSB = 255 &  ~ (((1<<lengthMSB)-1) << StartbitMSB);
+            unsigned char maskLSB = 255 &  ~ (((1<<lengthLSB)-1) << Startbit);
+
+            byteMSB = byteMSB & maskMSB;
+            byteLSB = byteLSB & maskLSB;
+
+            (*twobytedata)[0] = byteMSB | (dataMSB << StartbitMSB);
+            (*twobytedata)[1] = byteLSB | (dataLSB << Startbit);
+
+             write(dataAddress, twobytedata);
+        }
     };
 
     //1.MSB位址  2.MSB開始bit  3.MSB結束bit  4.LSB位址  5.LSB開始bit  6.LSB結束bit  7.寫入Value    byBS+
@@ -803,6 +890,9 @@ namespace i2c {
 	bytedata = bytedata >> bit;
 	bytedata = bytedata & 1;
 	return (1 == bytedata);
+
+        //應要加入2 byte data 的potocol  (很趕，之後有空加)
+        //(control->dataByteNum == 2)
     };
 };
 

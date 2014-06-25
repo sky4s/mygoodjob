@@ -38,6 +38,7 @@ namespace i2c {
         static const DirectGammaType TCON11311Instance;
         static const DirectGammaType TCON12411AgingInstance;
         static const DirectGammaType TCON12411Instance;
+        static const DirectGammaType HawkTypeInstance;
     };
 
     class TCONParameter {
@@ -62,7 +63,9 @@ namespace i2c {
         const int agingAGBSDebugAddress;
         const unsigned char agingAGBSDebugBit;
         const int agingModeSelectAddress;
-        const unsigned char agingModeSelectBit;
+        const int agingModeSelectValue;
+        const unsigned char agingModeSelectStartBit;
+        const unsigned char agingModeSelectEndBit;
         const int agingPatternSelectAddress;
         const unsigned char agingPatternSelectValue;
         const unsigned char agingPatternSelectStartBit;
@@ -203,7 +206,8 @@ namespace i2c {
 		       const int directGammaRGBAddress, const DirectGammaType & directGammaType,
 		       const int FRCAddress, const unsigned char FRCBit,
                        const int agingAGBSDebugAddress, const unsigned char agingAGBSDebugBit,
-                       const int agingModeSelectAddress, const unsigned char agingModeSelectBit,
+                       const int agingModeSelectAddress, const int agingModeSelectValue,
+                       const unsigned char agingModeSelectStartBit, const unsigned char agingModeSelectEndBit,
                        const int agingPatternSelectAddress, const unsigned char agingPatternSelectValue,
                        const unsigned char agingPatternSelectStartBit,
                        const unsigned char agingPatternSelectEndBit,
@@ -229,7 +233,8 @@ namespace i2c {
 		       const int directGammaRGBAddress, const DirectGammaType & directGammaType,
 		       const int FRCAddress, const unsigned char FRCBit,
                        const int agingAGBSDebugAddress, const unsigned char agingAGBSDebugBit,
-                       const int agingModeSelectAddress, const unsigned char agingModeSelectBit,
+                       const int agingModeSelectAddress, const int agingModeSelectValue,
+                       const unsigned char agingModeSelectStartBit, const unsigned char agingModeSelectEndBit,
                        const int agingPatternSelectAddress, const unsigned char agingPatternSelectValue,
                        const unsigned char agingPatternSelectStartBit,
                        const unsigned char agingPatternSelectEndBit,

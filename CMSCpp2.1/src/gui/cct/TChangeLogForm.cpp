@@ -18,6 +18,9 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        *AUO11311 有新type |RH|RL|GH|GL|BH|BL|(14,0,30,16,46,32,6,10)\r\n\
         且Address當中有包含其他設定值的Register\r\n\
        \r\n\
+       [3.7 build 1.69] 2014/06/25\r\n\
+       +增加TCON Hawk\r\n\
+       +增加I2C Control，2-byte data potocol(for USB card)\r\n\
        [3.7 build 1.68] 2014/06/17\r\n\
        +增加Timing setting eegister(for TCON 12411/2)\r\n\
        +Gamma Measure前預先等待5000ms, 讓液晶進入穩態\r\n\
