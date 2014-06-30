@@ -93,6 +93,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
       }
 
       MeasureWindow->Visible = false;
+      MeasureWindow->setImageOff();
 
 //      String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 //      string filename = astr->c_str();

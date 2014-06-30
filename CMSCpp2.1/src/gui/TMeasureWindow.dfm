@@ -22,8 +22,8 @@ object MeasureWindow: TMeasureWindow
   PixelsPerInch = 96
   TextHeight = 13
   object Image1: TImage
-    Left = 88
-    Top = 72
+    Left = 0
+    Top = 0
     Width = 85
     Height = 85
     AutoSize = True
