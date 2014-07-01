@@ -1,6 +1,6 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 492
-  Top = 43
+  Left = 519
+  Top = 122
   Width = 411
   Height = 511
   Caption = 'Gamma Measurement'

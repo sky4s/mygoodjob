@@ -527,7 +527,7 @@ void __fastcall TMeasureWindow::Button3Click(TObject *Sender)
 
         tconcontrol->setGammaTest(false);
         tconcontrol->setDG(true);*/
-	tconcontrol->setTconAgingMode(false);
+	tconcontrol->setTconAgingMode(true);
 
 
         //setRGB(512, 512, 512);

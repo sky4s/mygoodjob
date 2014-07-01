@@ -74,7 +74,7 @@ namespace i2c {
 	static int_array getLMHData(int data);
 
 	void setSingleBitData(int dataAddress, unsigned char bit, bool data);
-        void setBitData(int dataAddress, unsigned char Startbit, unsigned char Endbit, int data);
+        void setBitData(int dataAddress, unsigned char Startbit, unsigned char Endbit, unsigned char data);
         void setTwoByteData(int MSBAddress, unsigned char MSB_Startbit, unsigned char MSB_Endbit,
                             int LSBAddress, unsigned char LSB_Startbit, unsigned char LSB_Endbit, int value);                                     
 	bool getBitData(int dataAddress, unsigned char bit);

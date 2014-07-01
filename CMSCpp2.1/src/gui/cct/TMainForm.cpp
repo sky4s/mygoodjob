@@ -1108,8 +1108,8 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     }
 
     AnsiString tconNum = ComboBox_TCONType->Text;   //傳給tconparameter(for顯示在excel中)   20140618 byBS+
-    if (true == connect) {
-    //if (true) {
+    //if (true == connect) {
+    if (true) {
 	//=====================================================================
 	// FRC
 	//=====================================================================
@@ -2795,7 +2795,7 @@ void TMainForm::initTCONFile()
 
         //AG Timnig Setting
         ini->WriteBool("12411/2", "AGTiming", true);
-	ini->WriteString("12411/2", "AGFrameRate", "120Hz");
+	ini->WriteString("12411/2", "AGFrameRate", "60Hz");
 	ini->WriteString("12411/2", "AGFrameRateAddress", "5A");
         ini->WriteInteger("12411/2", "AGFrameRateStartBit", 4);
         ini->WriteInteger("12411/2", "AGFrameRateEndBit", 5);
