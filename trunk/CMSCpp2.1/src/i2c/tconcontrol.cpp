@@ -451,13 +451,16 @@ namespace i2c {
 
     void TCONControl::setTconAgingMode(bool enable) {
         //1. AG_PTN_SEL
-        //2. AG_MODE_SEL    (Hold!?)
+        //2. AG_MODE_SEL    (Hold)
         //3. AG_MANU_SEL    (目前只有AUO-12411/2有,12409無)  201312 by BS+
         //4. AGBS_DEBUG
         setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
                    parameter->agingPatternSelectEndBit, parameter->agingPatternSelectValue);
+
         setBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectStartBit,
                    parameter->agingModeSelectEndBit, parameter->agingModeSelectValue);
+
+        setSingleBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectStartBit, enable);
         if(parameter->agingManuSelectAddress != -1) {
             setSingleBitData(parameter->agingManuSelectAddress, parameter->agingManuSelectBit, 0); //0: 選Type 1(AUO)
         }
@@ -809,7 +812,8 @@ namespace i2c {
     };
                                  //1.EEPROM位址  2.開始bit  3.結束bit  4. 寫入值    byBS+
     void TCONControl::setBitData(int dataAddress, unsigned char Startbit,
-                                 unsigned char Endbit, int data) {
+                                 unsigned char Endbit, unsigned char data) {
+
         if(control->dataByteNum == 1) {
             unsigned char bytedata = readByte(dataAddress);
             unsigned char bitlength = (Endbit-Startbit+1);

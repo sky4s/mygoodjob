@@ -18,6 +18,8 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        *AUO11311 有新type |RH|RL|GH|GL|BH|BL|(14,0,30,16,46,32,6,10)\r\n\
         且Address當中有包含其他設定值的Register\r\n\
        \r\n\
+       [3.7 build 1.70] 2014/06/30\r\n\
+       -解決AUO-12411/2 Aging量測問題(AG_PTN address 參數傳遞修正)\r\n\
        [3.7 build 1.69] 2014/06/25\r\n\
        +增加TCON Hawk\r\n\
        +增加I2C Control，2-byte data potocol(for USB card)\r\n\

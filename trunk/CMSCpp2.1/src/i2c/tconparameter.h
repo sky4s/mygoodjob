@@ -72,8 +72,8 @@ namespace i2c {
         const unsigned char agingPatternSelectEndBit;
         const int agingRasterGrayAddress;
         const DirectGammaType & agingModeType;
-        const unsigned char agingManuSelectAddress;
-        const int agingManuSelectBit;
+        const int agingManuSelectAddress;
+        const unsigned char agingManuSelectBit;
         //aging timing
         const bool agingTimingControl;
         const int agingFrameRate;
@@ -212,7 +212,7 @@ namespace i2c {
                        const unsigned char agingPatternSelectStartBit,
                        const unsigned char agingPatternSelectEndBit,
                        const int agingRasterGrayAddress, const DirectGammaType & agingModeType,
-                       const unsigned char agingManuSelectAddress, const int agingManuSelectBit,
+                       const int agingManuSelectAddress, const unsigned char agingManuSelectBit,
                        const bool agingTimingControl,
                        const int agingFrameRate, const int agingFrameRateAddress, const unsigned char agingFrameRateStartBit, const unsigned char agingFrameRateEndBit,
                        const int agingMpllModeAddress, const unsigned char agingMpllModeStartBit, const unsigned char agingMpllModeEndBit, const int agingMpllModeValue,
@@ -239,7 +239,7 @@ namespace i2c {
                        const unsigned char agingPatternSelectStartBit,
                        const unsigned char agingPatternSelectEndBit,
                        const int agingRasterGrayAddress, const DirectGammaType & agingModeType,
-                       const unsigned char agingManuSelectAddress, const int agingManuSelectBit,
+                       const int agingManuSelectAddress, const unsigned char agingManuSelectBit,
                        const int DG2Address, const unsigned char DG2Bit, const int DG2LutAddress,
                        const int gammaTest2Address, const unsigned char gammaTest2Bit, const int directGamma2RGBAddress,
                        const int FRC2Address, const unsigned char FRC2Bit,
