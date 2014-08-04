@@ -8,6 +8,7 @@
 //C++系統文件
 
 //其他庫頭文件
+#include <FileCtrl.hpp>
 
 //本項目內頭文件
 #include "TGammaMeasurementForm.h"
@@ -53,6 +54,12 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 
     if (imageMeasure)           //20140609 skyforce, 可用圖片做pattern的量測功能
     {
+      AnsiString Dir = "D:\\";
+      SelectDirectory("選擇目錄", "", Dir);
+      AnsiString finalDirName =
+        Dir.SubString(Dir.LastDelimiter("\\") + 1, Dir.Length());
+
+//    this->Edit_Directory->Text = Dir + " \\ ";
       int start = this->Edit_StartLevel->Text.ToInt();
       int end = this->Edit_EndLevel->Text.ToInt();
       int step = this->ComboBox_LevelStep->Text.ToInt();
@@ -64,10 +71,12 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
       XYZ_vector_ptr XYZVector(new XYZ_vector());
 
       MeasureWindow->Visible = true;
-      for (int graylevel = start; graylevel >= step; graylevel -= step)
+      for (int graylevel = start; graylevel >= end; graylevel -= step)
       {
-        //AnsiString filename = s.sprintf("%03d.", graylevel) + "bmp";
-        AnsiString filename = s.sprintf("%d.", graylevel) + "bmp";
+        AnsiString filename =
+          s.sprintf("%s\\%s_%03d.bmp", Dir, finalDirName, graylevel);
+//        AnsiString filename = s.sprintf(" % d.", graylevel) + " bmp ";
+
         if (FileExists(filename))
         {
           MeasureWindow->setImageFilename(filename.c_str());
@@ -87,7 +96,8 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
         }
         else
         {
-          ShowMessage("Image " + filename + " is not exisit! Stop measure.");
+          ShowMessage("Image " + filename +
+                      " is not exisit ! Stop measure.");
           break;
         }
       }
@@ -492,7 +502,7 @@ bool TGammaMeasurementForm::checkMeasureable()
       if (null == analyzer->getReferenceColor())
       {
         ShowMessage
-          ("Set \"Target White\" first or use CA-210 Intensity Analyzer");
+          ("Set \" Target White \" first or use CA-210 Intensity Analyzer");
         return false;
       }
       else
