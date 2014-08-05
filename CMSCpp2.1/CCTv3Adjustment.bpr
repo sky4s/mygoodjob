@@ -187,7 +187,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=7
 Release=1
-Build=69
+Build=71
 Debug=1
 PreRelease=1
 Special=0
@@ -199,7 +199,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.7.1.69
+FileVersion=3.7.1.71
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; RichardYCTsai(5626) &amp; skyforce(6123), Implement by skyforce
 LegalTrademarks=
@@ -207,9 +207,6 @@ OriginalFilename=
 ProductName=CCT Adjustment v3
 ProductVersion=3.4
 Comments=
-
-[Excluded Packages]
-c:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
 
 [HistoryLists\hlIncludePath]
 Count=15
